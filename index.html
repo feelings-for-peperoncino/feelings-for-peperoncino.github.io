@@ -18,15 +18,6 @@
 
 
 
-  <main>
-
-    <div>
-      <a href="https://feelings-for-peperoncino.github.io/dark-bg/">黒背景</a>
-    </div>
-
-  </main>
-
-
   <script>
     // Load header
     fetch('header.html')
@@ -35,6 +26,12 @@
         document.body.insertAdjacentHTML('afterbegin', data);
       });
 
+          // Load main
+    fetch('main.html')
+      .then(response => response.text())
+      .then(data => {
+        document.body.insertAdjacentHTML('beforeend', data);
+      });
     // Load footer
     fetch('footer.html')
       .then(response => response.text())
