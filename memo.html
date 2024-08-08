@@ -13,10 +13,25 @@
   <link rel="apple-touch-icon" sizes="76x76" href="img/apple-touch-icon-76x76.png"> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <style>
+    .highlight {
+    background-color: yellow;
+}
+
+  </style>
 </head>
 <body>
 
   <main>
+    <input type="text" id="searchInput" placeholder="検索語句を入力">
+    <button onclick="searchText()">検索</button>
+    <span id="resultCount"></span>
+    <button id="prevBtn" onclick="prevResult()">←</button>
+    <button id="nextBtn" onclick="nextResult()">→</button>
+    
+
+
+
     <h2>
       あとでまとめる
     </h2>
@@ -46,6 +61,37 @@
 
     </code>
   </pre>
+  あ<br>
+  い<br>
+  う<br>
+  え<br>
+  お<br>
+  か<br>
+  き<br>
+  く<br>
+  け<br>
+  こ<br>
+  さ<br>
+  し<br>
+  す<br>
+  せ<br>
+  そ<br>
+  た<br>
+  ち<br>
+  つ<br>
+  て<br>
+  と<br>
+  な<br>
+  に<br>
+  ぬ<br>
+  ね<br>
+  の<br>
+  は<br>
+  ひ<br>
+  ふ<br>
+  へ<br>
+  ほ<br>
+  ま<br>
 
   </main>
 
@@ -63,6 +109,93 @@
       .then(data => {
         document.body.insertAdjacentHTML('beforeend', data);
       });
+  </script>
+
+<script>
+let currentIndex = -1;
+let results = [];
+
+function searchText() {
+    const searchText = document.getElementById("searchInput").value.toLowerCase();
+    
+    // 検索結果をクリア
+    clearHighlights();
+    results = [];
+
+    if (searchText) {
+        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+        let node, nodeText, index;
+        let offset = 0;
+
+        while (node = walker.nextNode()) {
+            nodeText = node.textContent.toLowerCase();
+            index = nodeText.indexOf(searchText);
+
+            while (index !== -1) {
+                results.push({
+                    node: node,
+                    start: index,
+                    length: searchText.length
+                });
+
+                index = nodeText.indexOf(searchText, index + searchText.length);
+            }
+        }
+
+        // 検索結果の件数を表示
+        document.getElementById("resultCount").innerText = results.length + " 件の結果";
+
+        // 最初の結果にジャンプ
+        if (results.length > 0) {
+            currentIndex = 0;
+            highlightResult();
+        }
+    } else {
+        document.getElementById("resultCount").innerText = "0 件の結果";
+    }
+}
+
+function highlightResult() {
+    if (currentIndex >= 0 && currentIndex < results.length) {
+        clearHighlights();
+
+        const result = results[currentIndex];
+        const range = document.createRange();
+        range.setStart(result.node, result.start);
+        range.setEnd(result.node, result.start + result.length);
+
+        const highlight = document.createElement("span");
+        highlight.className = "highlight";
+        range.surroundContents(highlight);
+
+        // ハイライト箇所にスクロール
+        highlight.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+}
+
+function clearHighlights() {
+    const highlights = document.querySelectorAll('.highlight');
+    highlights.forEach(span => {
+        const parent = span.parentNode;
+        parent.replaceChild(span.firstChild, span);
+        parent.normalize(); // 連続するテキストノードを結合する
+    });
+}
+
+function nextResult() {
+    if (results.length > 0) {
+        currentIndex = (currentIndex + 1) % results.length;
+        highlightResult();
+    }
+}
+
+function prevResult() {
+    if (results.length > 0) {
+        currentIndex = (currentIndex - 1 + results.length) % results.length;
+        highlightResult();
+    }
+}
+
   </script>
 </body>
 </html>
