@@ -19,8 +19,6 @@
     .highlight {
       background-color: yellow;
     }
-
-
   </style>
 </head>
 
@@ -42,6 +40,123 @@
     <p>
 
     </p>
+
+    <hr>
+    <h2>ハイライトする検索窓</h2>
+    <div class="container">
+      <h3>html</h3>
+      <pre>
+        <code class="code-block auto-escape">
+<input type="text" id="searchInput" placeholder="検索語句を入力">
+<button onclick="searchText()">検索</button>
+<span id="resultCount"></span>
+<button id="prevBtn" onclick="prevResult()">←</button>
+<button id="nextBtn" onclick="nextResult()">→</button>
+        </code>
+        <button class="copy-btn">Copy</button>
+      </pre>
+      <h3>css</h3>
+
+
+<pre>
+  <code class="code-block auto-escape">
+    example
+  </code>
+  <button class="copy-btn">Copy</button>
+</pre>
+
+      <h3>script</h3>
+      <pre>
+        <code class="code-block auto-escape">
+          let currentIndex = -1;
+          let results = [];
+      
+          function searchText() {
+            const searchText = document.getElementById("searchInput").value.toLowerCase();
+      
+            // 検索結果をクリア
+            clearHighlights();
+            results = [];
+      
+            if (searchText) {
+              const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+              let node, nodeText, index;
+              let offset = 0;
+      
+              while (node = walker.nextNode()) {
+                nodeText = node.textContent.toLowerCase();
+                index = nodeText.indexOf(searchText);
+      
+                while (index !== -1) {
+                  results.push({
+                    node: node,
+                    start: index,
+                    length: searchText.length
+                  });
+      
+                  index = nodeText.indexOf(searchText, index + searchText.length);
+                }
+              }
+      
+              // 検索結果の件数を表示
+              document.getElementById("resultCount").innerText = results.length + " 件の結果";
+      
+              // 最初の結果にジャンプ
+              if (results.length > 0) {
+                currentIndex = 0;
+                highlightResult();
+              }
+            } else {
+              document.getElementById("resultCount").innerText = "0 件の結果";
+            }
+          }
+      
+          function highlightResult() {
+            if (currentIndex >= 0 && currentIndex < results.length) {
+              clearHighlights();
+      
+              const result = results[currentIndex];
+              const range = document.createRange();
+              range.setStart(result.node, result.start);
+              range.setEnd(result.node, result.start + result.length);
+      
+              const highlight = document.createElement("span");
+              highlight.className = "highlight";
+              range.surroundContents(highlight);
+      
+              // ハイライト箇所にスクロール
+              highlight.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          }
+      
+          function clearHighlights() {
+            const highlights = document.querySelectorAll('.highlight');
+            highlights.forEach(span => {
+              const parent = span.parentNode;
+              parent.replaceChild(span.firstChild, span);
+              parent.normalize(); // 連続するテキストノードを結合する
+            });
+          }
+      
+          function nextResult() {
+            if (results.length > 0) {
+              currentIndex = (currentIndex + 1) % results.length;
+              highlightResult();
+            }
+          }
+      
+          function prevResult() {
+            if (results.length > 0) {
+              currentIndex = (currentIndex - 1 + results.length) % results.length;
+              highlightResult();
+            }
+          }
+      
+        </code>
+        <button class="copy-btn">Copy</button>
+      </pre>
+    <hr>
+
     <hr>
     <div class="container">
 
@@ -68,8 +183,8 @@
       </pre>
 
 
-<p>css</p>
-<pre>
+      <p>css</p>
+      <pre>
   <code class="code-block auto-escape">
     pre {
       position: relative;
@@ -94,7 +209,7 @@
   <button class="copy-btn">Copy</button>
 </pre>
 
-      
+
 
       <p>コピーボタンのscript</p>
 
@@ -160,60 +275,10 @@
 
 
     </div>
-
     <hr>
 
-    <pre>
-      <code class="code-block">
-        example
-      </code>
-      <button class="copy-btn">Copy</button>
-    </pre>
-
-    <pre>
-      <code class="code-block">
-xyz
-
-xyz
 
 
-
-      </code>
-      <button class="copy-btn">Copy</button>
-  </pre>
-
-    <hr>
-    あ<br>
-    い<br>
-    う<br>
-    え<br>
-    お<br>
-    か<br>
-    き<br>
-    く<br>
-    け<br>
-    こ<br>
-    さ<br>
-    し<br>
-    す<br>
-    せ<br>
-    そ<br>
-    た<br>
-    ち<br>
-    つ<br>
-    て<br>
-    と<br>
-    な<br>
-    に<br>
-    ぬ<br>
-    ね<br>
-    の<br>
-    は<br>
-    ひ<br>
-    ふ<br>
-    へ<br>
-    ほ<br>
-    ま<br>
 
     <pre>
     <code id="code-block">
@@ -254,89 +319,6 @@ xyz
   </script>
 
   <script>
-    let currentIndex = -1;
-    let results = [];
-
-    function searchText() {
-      const searchText = document.getElementById("searchInput").value.toLowerCase();
-
-      // 検索結果をクリア
-      clearHighlights();
-      results = [];
-
-      if (searchText) {
-        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-        let node, nodeText, index;
-        let offset = 0;
-
-        while (node = walker.nextNode()) {
-          nodeText = node.textContent.toLowerCase();
-          index = nodeText.indexOf(searchText);
-
-          while (index !== -1) {
-            results.push({
-              node: node,
-              start: index,
-              length: searchText.length
-            });
-
-            index = nodeText.indexOf(searchText, index + searchText.length);
-          }
-        }
-
-        // 検索結果の件数を表示
-        document.getElementById("resultCount").innerText = results.length + " 件の結果";
-
-        // 最初の結果にジャンプ
-        if (results.length > 0) {
-          currentIndex = 0;
-          highlightResult();
-        }
-      } else {
-        document.getElementById("resultCount").innerText = "0 件の結果";
-      }
-    }
-
-    function highlightResult() {
-      if (currentIndex >= 0 && currentIndex < results.length) {
-        clearHighlights();
-
-        const result = results[currentIndex];
-        const range = document.createRange();
-        range.setStart(result.node, result.start);
-        range.setEnd(result.node, result.start + result.length);
-
-        const highlight = document.createElement("span");
-        highlight.className = "highlight";
-        range.surroundContents(highlight);
-
-        // ハイライト箇所にスクロール
-        highlight.scrollIntoView({ behavior: "smooth", block: "center" });
-      }
-    }
-
-    function clearHighlights() {
-      const highlights = document.querySelectorAll('.highlight');
-      highlights.forEach(span => {
-        const parent = span.parentNode;
-        parent.replaceChild(span.firstChild, span);
-        parent.normalize(); // 連続するテキストノードを結合する
-      });
-    }
-
-    function nextResult() {
-      if (results.length > 0) {
-        currentIndex = (currentIndex + 1) % results.length;
-        highlightResult();
-      }
-    }
-
-    function prevResult() {
-      if (results.length > 0) {
-        currentIndex = (currentIndex - 1 + results.length) % results.length;
-        highlightResult();
-      }
-    }
 
   </script>
 
