@@ -42,3 +42,23 @@ main {
   width: 75%;
   padding: 10px;
 }
+
+pre {
+  position: relative;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 1em;
+}
+
+.copy-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
