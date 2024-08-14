@@ -40,6 +40,31 @@
     <p>
 
     </p>
+    <hr>
+    <h2>高さ揃え</h2>
+    <div class="container">
+      <h3>css</h3>
+      <pre>
+  <code class="code-block auto-escape">
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    
+    body {
+      display: flex;
+      flex-direction: column;
+    } 
+    main {
+      flex: 1;
+    }
+  </code>
+  <button class="copy-btn">Copy</button>
+</pre>
+
+
+
+    </div>
 
     <hr>
     <h2>ハイライトする検索窓</h2>
@@ -58,7 +83,7 @@
       <h3>css</h3>
 
 
-<pre>
+      <pre>
   <code class="code-block auto-escape">
     example
   </code>
@@ -155,19 +180,19 @@
         </code>
         <button class="copy-btn">Copy</button>
       </pre>
-    <hr>
+      <hr>
 
-    <hr>
-    <div class="container">
-
-
-      <h3>
-        コピペできるcodeタグ
-      </h3>
+      <hr>
+      <div class="container">
 
 
-      <p>html</p>
-      <pre>
+        <h3>
+          コピペできるcodeタグ
+        </h3>
+
+
+        <p>html</p>
+        <pre>
           <code class="code-block auto-escape">
 
 <pre>
@@ -178,13 +203,13 @@
   <button class="copy-btn">Copy</button>
 </pre>
 
-      </code>
-      <button class="copy-btn">Copy</button>
-      </pre>
+        </code>
+        <button class="copy-btn">Copy</button>
+        </pre>
 
 
-      <p>css</p>
-      <pre>
+        <p>css</p>
+        <pre>
   <code class="code-block auto-escape">
     pre {
       position: relative;
@@ -211,10 +236,10 @@
 
 
 
-      <p>コピーボタンのscript</p>
+        <p>コピーボタンのscript</p>
 
 
-      <pre>
+        <pre>
   <code class="code-block auto-escape">
     document.querySelectorAll('.copy-btn').forEach(button => {
       button.addEventListener('click', () => {
@@ -243,8 +268,8 @@
 
 
 
-      <p>エスケープ処理のscript</p>
-      <pre>
+        <p>エスケープ処理のscript</p>
+        <pre>
   <code class="code-block auto-escape">
       document.addEventListener("DOMContentLoaded", function() {
           document.querySelectorAll('.auto-escape').forEach(function(codeBlock) {
@@ -265,8 +290,8 @@
 
 
 
-      <p>実例</p>
-      <pre>
+        <p>実例</p>
+        <pre>
           <code class="code-block">
             example
           </code>
@@ -274,13 +299,13 @@
         </pre>
 
 
-    </div>
-    <hr>
+      </div>
+      <hr>
 
 
 
 
-    <pre>
+      <pre>
     <code id="code-block">
         fetch('header.html')
           .then(response => response.text())
